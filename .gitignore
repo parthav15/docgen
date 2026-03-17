@@ -1,0 +1,6 @@
+node_modules/
+nanobanana-output/
+docs/
+.env
+*.log
+.DS_Store
