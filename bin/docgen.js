@@ -15,16 +15,45 @@ program
   .name('docgen')
   .description('Generate full documentation for any codebase in 60 seconds')
   .version('1.0.0')
-  .argument('[path]', 'Path to the project to document', '.')
-  .requiredOption('-p, --provider <provider>', 'AI provider: claude | openai | gemini')
-  .requiredOption('-k, --key <apiKey>', 'API key for the chosen provider')
+  .argument('[path]', 'Path to the project (defaults to current directory)')
+  .option('-p, --provider <provider>', 'AI provider: claude | openai | gemini')
+  .option('-k, --key <apiKey>', 'API key for the provider')
   .option('-m, --model <model>', 'Specific model to use (defaults to best available)')
-  .option('-o, --output <dir>', 'Output directory for generated docs', './docs')
+  .option('-o, --output <dir>', 'Output directory for generated docs', 'docs')
   .option('--no-graph', 'Skip dependency graph generation')
-  .action(async (projectPath, options) => {
+  .action(async (projectPath = '.', options) => {
     const startTime = Date.now();
     const resolvedPath = resolve(projectPath);
-    const outputDir = resolve(options.output);
+    const outputDir = resolve(resolvedPath, options.output);
+
+    // Auto-detect provider and key from env vars if not provided
+    if (!options.key) {
+      if (process.env.ANTHROPIC_API_KEY) {
+        options.key = process.env.ANTHROPIC_API_KEY;
+        options.provider = options.provider || 'claude';
+      } else if (process.env.OPENAI_API_KEY) {
+        options.key = process.env.OPENAI_API_KEY;
+        options.provider = options.provider || 'openai';
+      } else if (process.env.GEMINI_API_KEY) {
+        options.key = process.env.GEMINI_API_KEY;
+        options.provider = options.provider || 'gemini';
+      }
+    }
+
+    if (!options.provider || !options.key) {
+      console.log('');
+      console.log(chalk.red('  Missing provider and/or API key.'));
+      console.log('');
+      console.log(chalk.dim('  Either pass them as flags:'));
+      console.log(`    ${chalk.cyan('docgen -p claude -k sk-ant-xxx')}`);
+      console.log('');
+      console.log(chalk.dim('  Or set an env var (auto-detected):'));
+      console.log(`    ${chalk.cyan('export ANTHROPIC_API_KEY=sk-ant-xxx')}`);
+      console.log(`    ${chalk.cyan('export OPENAI_API_KEY=sk-xxx')}`);
+      console.log(`    ${chalk.cyan('export GEMINI_API_KEY=AIza-xxx')}`);
+      console.log('');
+      process.exit(1);
+    }
 
     console.log('');
     console.log(chalk.bold.green('  docgen') + chalk.dim(' — codebase documentation generator'));

@@ -28,7 +28,7 @@ npm install -g docgen
 Or run directly:
 
 ```bash
-npx docgen ./my-project -p claude -k YOUR_API_KEY
+npx docgen my-project -p claude -k YOUR_API_KEY
 ```
 
 ### Prerequisites
@@ -47,23 +47,32 @@ sudo apt install graphviz
 ## Usage
 
 ```bash
-# With Claude
-docgen ./my-project -p claude -k sk-ant-xxx
+# Set your API key once (auto-detected, no flags needed)
+export ANTHROPIC_API_KEY=sk-ant-xxx   # or OPENAI_API_KEY or GEMINI_API_KEY
 
-# With OpenAI
-docgen ./my-project -p openai -k sk-xxx
+# Then just cd into any project and run:
+docgen
 
-# With Gemini
-docgen ./my-project -p gemini -k AIza-xxx
+# That's it. Docs appear in ./docs/
+```
+
+### More examples
+
+```bash
+# Pass provider and key explicitly
+docgen -p claude -k sk-ant-xxx
+
+# Point it at a different project
+docgen my-project -p gemini -k AIza-xxx
 
 # Custom output directory
-docgen ./my-project -p claude -k sk-ant-xxx -o ./documentation
+docgen -p openai -k sk-xxx -o documentation
 
 # Skip dependency graph
-docgen ./my-project -p claude -k sk-ant-xxx --no-graph
+docgen -p claude -k sk-ant-xxx --no-graph
 
 # Use a specific model
-docgen ./my-project -p claude -k sk-ant-xxx -m claude-opus-4-6-20250514
+docgen -p claude -k sk-ant-xxx -m claude-opus-4-6-20250514
 ```
 
 ## Options
