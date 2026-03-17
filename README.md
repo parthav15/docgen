@@ -1,4 +1,4 @@
-# docgen
+# codebase-docs
 
 Generate full documentation for any codebase in 60 seconds.
 
@@ -22,13 +22,7 @@ docs/
 ## Install
 
 ```bash
-npm install -g docgen
-```
-
-Or run directly:
-
-```bash
-npx docgen my-project -p claude -k YOUR_API_KEY
+npm install -g codebase-docs
 ```
 
 ### Prerequisites
@@ -51,7 +45,7 @@ sudo apt install graphviz
 export ANTHROPIC_API_KEY=sk-ant-xxx   # or OPENAI_API_KEY or GEMINI_API_KEY
 
 # Then just cd into any project and run:
-docgen
+codebase-docs
 
 # That's it. Docs appear in ./docs/
 ```
@@ -60,30 +54,40 @@ docgen
 
 ```bash
 # Pass provider and key explicitly
-docgen -p claude -k sk-ant-xxx
+codebase-docs -p claude -k sk-ant-xxx
 
 # Point it at a different project
-docgen my-project -p gemini -k AIza-xxx
+codebase-docs my-project -p gemini -k AIza-xxx
 
 # Custom output directory
-docgen -p openai -k sk-xxx -o documentation
+codebase-docs -p openai -k sk-xxx -o documentation
 
 # Skip dependency graph
-docgen -p claude -k sk-ant-xxx --no-graph
+codebase-docs -p claude -k sk-ant-xxx --no-graph
 
 # Use a specific model
-docgen -p claude -k sk-ant-xxx -m claude-opus-4-6-20250514
+codebase-docs -p claude -k sk-ant-xxx -m claude-opus-4-6-20250514
 ```
 
 ## Options
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `-p, --provider` | AI provider: `claude`, `openai`, or `gemini` | Required |
-| `-k, --key` | API key for the chosen provider | Required |
+| `-p, --provider` | AI provider: `claude`, `openai`, or `gemini` | Auto-detected from env |
+| `-k, --key` | API key for the chosen provider | Auto-detected from env |
 | `-m, --model` | Specific model to use | Best available |
-| `-o, --output` | Output directory | `./docs` |
+| `-o, --output` | Output directory | `docs` |
 | `--no-graph` | Skip dependency graph generation | `false` |
+
+## Environment variables
+
+Set any of these and the provider/key flags become optional:
+
+| Variable | Provider |
+|----------|----------|
+| `ANTHROPIC_API_KEY` | Claude |
+| `OPENAI_API_KEY` | OpenAI |
+| `GEMINI_API_KEY` | Gemini |
 
 ## Default models
 
@@ -99,7 +103,7 @@ docgen -p claude -k sk-ant-xxx -m claude-opus-4-6-20250514
 
 2. **Detect** — Identifies the framework (Next.js, Django, Rails, etc.) and primary language automatically from config files.
 
-3. **Analyze** — Sends the codebase map to your chosen AI with a detailed prompt that asks for specific, file-referenced documentation — not generic filler.
+3. **Analyze** — Sends the codebase map to your chosen AI with a detailed prompt that asks for specific, file-referenced documentation.
 
 4. **Graph** — Uses [madge](https://github.com/pahen/madge) to compute a real dependency graph from your imports. Finds circular dependencies and orphan files.
 

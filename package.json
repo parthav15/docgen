@@ -1,17 +1,21 @@
 {
-  "name": "docgen",
+  "name": "codebase-docs",
   "version": "1.0.0",
   "description": "Generate full documentation for any codebase in 60 seconds",
   "type": "module",
   "bin": {
-    "docgen": "./bin/docgen.js"
+    "codebase-docs": "./bin/docgen.js"
   },
   "scripts": {
     "test": "node bin/docgen.js --help"
   },
-  "keywords": ["documentation", "cli", "ai", "codebase", "developer-tools"],
+  "keywords": ["documentation", "cli", "ai", "codebase", "developer-tools", "onboarding", "dependency-graph"],
   "author": "Parthav",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parthav15/docgen"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",
     "@google/generative-ai": "^0.24.1",

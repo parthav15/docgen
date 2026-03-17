@@ -12,7 +12,7 @@ import { writeDocs } from '../src/generators/write-docs.js';
 const program = new Command();
 
 program
-  .name('docgen')
+  .name('codebase-docs')
   .description('Generate full documentation for any codebase in 60 seconds')
   .version('1.0.0')
   .argument('[path]', 'Path to the project (defaults to current directory)')
@@ -56,7 +56,7 @@ program
     }
 
     console.log('');
-    console.log(chalk.bold.green('  docgen') + chalk.dim(' — codebase documentation generator'));
+    console.log(chalk.bold.green('  codebase-docs') + chalk.dim(' — codebase documentation generator'));
     console.log(chalk.dim(`  Project: ${resolvedPath}`));
     console.log(chalk.dim(`  Provider: ${options.provider}`));
     console.log('');
